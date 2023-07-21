@@ -601,6 +601,16 @@ fail:
 	return rv;
 }
 
+static int xdma_cdev_dev_uevent(struct device *dev, struct kobj_uevent_env *env)
+{
+	// make sure that created device files are non-root user accessible
+	// see: https://stackoverflow.com/a/21774410/2604712
+	// https://stackoverflow.com/questions/21767061/linux-kernel-module-character-device-permissions
+
+	add_uevent_var(env, "DEVMODE=%#o", 0777);
+	return 0;
+}
+
 int xdma_cdev_init(void)
 {
 	g_xdma_class = class_create(THIS_MODULE, XDMA_NODE_NAME);
@@ -608,6 +618,9 @@ int xdma_cdev_init(void)
 		dbg_init(XDMA_NODE_NAME ": failed to create class");
 		return -EINVAL;
 	}
+
+	// called when a device is added to this class
+	g_xdma_class->dev_uevent = &xdma_cdev_dev_uevent;
 
 	/* using kmem_cache_create to enable sequential cleanup */
 	cdev_cache = kmem_cache_create("cdev_cache",
