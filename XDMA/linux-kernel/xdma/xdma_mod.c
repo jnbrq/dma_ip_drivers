@@ -62,6 +62,7 @@ static const struct pci_device_id pci_ids[] = {
 	{ PCI_DEVICE(0x10ee, 0x9031), },
 	{ PCI_DEVICE(0x10ee, 0x9021), },
 	{ PCI_DEVICE(0x10ee, 0x9011), },
+        { PCI_DEVICE(0x10ee, 0x902f), }, // added by Canberk
 
 	{ PCI_DEVICE(0x10ee, 0x8011), },
 	{ PCI_DEVICE(0x10ee, 0x8012), },
